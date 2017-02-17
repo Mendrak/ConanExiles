@@ -5,7 +5,7 @@ echo Lists of coords where players placed down only 1 foundation that does not h
 echo Run it from ConanSandbox\Saved\ (or change db path in source)
 timeout 5
 set db=game.db
-sqlite3 %db% "SELECT actor_position.x, actor_position.y, actor_position.y, characters.char_name FROM buildings INNER JOIN building_instances ON buildings.object_id = building_instances.object_id INNER JOIN characters ON characters.id = buildings.owner_id INNER JOIN actor_position ON actor_position.id = buildings.object_id WHERE building_instances.class = '/Game/Systems/Building/BP_BuildFoundation.BP_BuildFoundation_C' GROUP BY characters.char_name HAVING COUNT(building_instances.object_id) <= 1;\" >results.txt
+sqlite3 %db% "SELECT actor_position.x, actor_position.y, actor_position.z, characters.char_name FROM buildings INNER JOIN building_instances ON buildings.object_id = building_instances.object_id INNER JOIN characters ON characters.id = buildings.owner_id INNER JOIN actor_position ON actor_position.id = buildings.object_id WHERE building_instances.class = '/Game/Systems/Building/BP_BuildFoundation.BP_BuildFoundation_C' OR building_instances.class =  '/Game/Systems/Building/BP_BuildFoundation_T2.BP_BuildFoundation_T2_C' OR building_instances.class =  '/Game/Systems/Building/BP_BuildTriangleFoundation.BP_BuildTriangleFoundation_C' OR building_instances.class =  '/Game/Systems/Building/BP_BuildTriangleFoundation_T2.BP_BuildTriangleFoundation_T2_C' GROUP BY characters.char_name HAVING COUNT(building_instances.object_id) <= 1;\" >results.txt
 for /f "tokens=1,2,3,4 delims=| " %%a in (results.txt) do (
  set xc=%%a
  set yc=%%b
